@@ -1,0 +1,95 @@
+#Importing keras stuff
+from keras.layers import Dense, Flatten, Lambda, PReLU, MaxPooling2D, Dropout
+from keras.layers.convolutional import Convolution2D, Conv2D
+from keras.layers.normalization import BatchNormalization
+from keras.models import Sequential
+from keras.optimizers import Adam
+
+
+def nvidia_model():
+    model = Sequential()
+    # Normalizing the image pixels
+    model.add(Lambda(lambda x: x/127.5 - 1.0 , input_shape=(64,64,3)))
+
+    # Convolutional Layers
+    model.add(Conv2D(24,5,5,border_mode='valid',subsample=(2,2),init='he_normal'))
+    model.add(PReLU())
+    model.add(BatchNormalization())
+
+    model.add(Conv2D(36,5,5,border_mode='valid', subsample=(2,2), init='he_normal'))
+    model.add(PReLU())
+    model.add(BatchNormalization())
+
+    model.add(Conv2D(48,5,5, border_mode='valid', subsample=(2,2), init='he_normal'))
+    model.add(PReLU())
+    model.add(BatchNormalization())
+
+    model.add(Conv2D(64,3,3, border_mode='valid', subsample=(2,2), init='he_normal'))
+    model.add(PReLU())
+    model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+
+    model.add(Conv2D(64, 3, 3, border_mode='same', subsample=(1, 1), init='he_normal'))
+    model.add(PReLU())
+    model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+
+    model.add(Flatten())
+
+    # fully connected layers
+    model.add(Dense(1164, init='he_normal'))
+    model.add(PReLU())
+    model.add(BatchNormalization())
+    model.add(Dropout(0.8))
+
+    model.add(Dense(100, init='he_normal'))
+    model.add(PReLU())
+    model.add(BatchNormalization())
+    model.add(Dropout(0.8))
+
+    model.add(Dense(50, init='he_normal'))
+    model.add(PReLU())
+    model.add(BatchNormalization())
+
+    model.add(Dense(10, init='he_normal'))
+    model.add(PReLU())
+    model.add(BatchNormalization())
+
+    model.add(Dense(1, activation='tanh'))
+
+    return model
+
+
+def main():
+    # prepare data
+    train, valid = utility.prepare_data()
+
+    # get model
+    model = nvidia_model()
+    model.summary()
+
+    # generators for training and validation
+    BATCH = 128
+    train_gen = utility.next_train_batch(train, BATCH)
+    valid_gen = utility.next_valid_batch(valid, BATCH)
+
+    # training
+    EPOCHS = 5
+    TRAINS = 20480
+    VALIDS = 4096
+    model.compile(optimizer=Adam(1e-2), loss="mse")
+    history = model.fit_generator(train_gen,
+                                  samples_per_epoch=TRAINS,
+                                  nb_epoch=EPOCHS,
+                                  validation_data=valid_gen,
+                                  nb_val_samples=VALIDS,
+                                  verbose=1)
+
+    # save model, weights
+    model.save_weights('model.h5')
+    with open('model.json', 'w') as f:
+        f.write(model.to_json())
+
+
+if __name__ == '__main__':
+    main()
