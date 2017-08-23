@@ -86,9 +86,26 @@ Gamma values < 1 will shift the image towards the darker end of the spectrum whi
     table = np.array([((i / 255.0) ** gamma_inv) * 255
                       for i in np.arange(0, 256)]).astype("uint8")
     return cv2.LUT(image, table)
+def random_shear(image, steering, shear_range=200):
+  rows, cols, _ = image.shape
+  dx = np.random.randint(-shear_range, shear_range + 1)
+  random_point = [cols / 2 + dx, rows / 2]
+  pts1 = np.float32([[0, rows], [cols, rows], [cols / 2, rows / 2]])
+  pts2 = np.float32([[0, rows], [cols, rows], random_point])
+  dsteering = dx / (rows / 2) * 360 / (2 * np.pi * 25.0) / 6.0
+  M = cv2.getAffineTransform(pts1, pts2)
+  image = cv2.warpAffine(image, M, (cols, rows), borderMode=1)
+  return image, steering + dsteering
+
+def random_bumpy(image, y_range=20):
+  rows, cols, _ = image.shape
+  dy = (y_range * np.random.uniform()) - (y_range / 2)
+  M = np.float32([[1, 0, 0], [0, 1, dy]])
+  return cv2.warpAffine(image, M, (cols, rows))
 
 def get_augmented_data(image, steering):
-
+  if np.random.binomial(1, 0.9):
+    image, steering = random_shear(image, steering)
   image, steering = flip_random(image, steering)
   image = gamma_corrector(image)
   image = preprocess_image(image)
