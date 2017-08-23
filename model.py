@@ -5,6 +5,9 @@ from keras.layers.normalization import BatchNormalization
 from keras.models import Sequential
 from keras.optimizers import Adam
 
+import utility
+
+
 
 def nvidia_model():
     model = Sequential()
