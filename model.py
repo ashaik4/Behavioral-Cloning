@@ -11,28 +11,28 @@ import utility
 
 def nvidia_model():
     model = Sequential()
-    # Normalizing the image pixels
-    model.add(Lambda(lambda x: x/127.5 - 1.0 , input_shape=(64,64,3)))
+    # normalization
+    model.add(Lambda(lambda x: x / 127.5 - 1.0, input_shape=(64, 64, 3)))
 
-    # Convolutional Layers
-    model.add(Conv2D(24,5,5,border_mode='valid',subsample=(2,2),init='he_normal'))
+    # convolutional and maxpooling layers
+    model.add(Convolution2D(24, 5, 5, border_mode='valid', subsample=(2, 2), init='he_normal'))
     model.add(PReLU())
     model.add(BatchNormalization())
 
-    model.add(Conv2D(36,5,5,border_mode='valid', subsample=(2,2), init='he_normal'))
+    model.add(Convolution2D(36, 5, 5, border_mode='valid', subsample=(2, 2), init='he_normal'))
     model.add(PReLU())
     model.add(BatchNormalization())
 
-    model.add(Conv2D(48,5,5, border_mode='valid', subsample=(2,2), init='he_normal'))
+    model.add(Convolution2D(48, 5, 5, border_mode='valid', subsample=(2, 2), init='he_normal'))
     model.add(PReLU())
     model.add(BatchNormalization())
 
-    model.add(Conv2D(64,3,3, border_mode='valid', subsample=(2,2), init='he_normal'))
+    model.add(Convolution2D(64, 3, 3, border_mode='same', subsample=(1, 1), init='he_normal'))
     model.add(PReLU())
     model.add(BatchNormalization())
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
 
-    model.add(Conv2D(64, 3, 3, border_mode='same', subsample=(1, 1), init='he_normal'))
+    model.add(Convolution2D(64, 3, 3, border_mode='same', subsample=(1, 1), init='he_normal'))
     model.add(PReLU())
     model.add(BatchNormalization())
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
