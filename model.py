@@ -7,6 +7,9 @@ from keras.optimizers import Adam
 
 import utility
 
+# Fix error with Keras and TensorFlow
+import tensorflow as tf
+tf.python.control_flow_ops = tf
 
 
 def nvidia_model():
