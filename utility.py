@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import pandas as pd
 import matplotlib.image as mpimg
+from matplotlib import pyplot as plt
 
 
 def csv_reader(path):
@@ -41,7 +42,7 @@ def camera_data(row, camera, angle_correction = 0.23):
     else:
         image_path = row.right.strip()
         steering = row.steering - angle_correction
-    image = mpimg.imread('./data'+image_path[image_path.find('IMG'):])
+    image = mpimg.imread('./data/'+image_path[image_path.find('IMG'):])
 
     return image, steering
 
@@ -57,10 +58,10 @@ def camera_image_choose(row):
 
 def flip_random(image, steering):
     # randomly choose
-    if np.random.binomial(1, 0.5):
-        return cv2.flip(image, 1), -steering
-    else:
-        return image, steering
+    #if np.random.binomial(1, 0.5):
+    return cv2.flip(image, 1), -steering
+    #else:
+    #    return image, steering
 
 def gamma_corrector(image):
     """
@@ -142,6 +143,74 @@ def next_valid_batch(data, batch_size):
       current = (current + 1) % total
 
     yield np.array(images), np.array(steerings)
+def test_image_shear(data):
+    r = np.random.randint(1,100)
+    original_image, steering  = camera_image_choose(data.iloc[r])
+    image , steering = random_shear(original_image, steering,shear_range=100)
 
+    fig = plt.figure()
+    a = fig.add_subplot(1, 2, 1)
+    img = original_image
+
+    imgplot = plt.imshow(img)
+    a.set_title('original image')
+
+    a = fig.add_subplot(1, 2, 2)
+    imgplot = plt.imshow(image)
+    imgplot.set_clim(0.0, 0.7)
+    a.set_title('sheared image')
+    plt.show()
+
+def test_image_gamma(data):
+    r = np.random.randint(1,100)
+    original_image, steering_angle = camera_image_choose(data.iloc[r])
+    gamma_corrected = gamma_corrector(original_image)
+    fig = plt.figure()
+    a = fig.add_subplot(1, 2, 1)
+    img = original_image
+
+    imgplot = plt.imshow(img)
+    a.set_title('original image')
+
+    a = fig.add_subplot(1, 2, 2)
+    imgplot = plt.imshow(gamma_corrected)
+    imgplot.set_clim(0.0, 0.7)
+    a.set_title('gamma corrected image')
+    plt.show()
+
+def test_image_flip(data):
+    r = np.random.randint(1, 100)
+    original_image, steering_angle = camera_image_choose(data.iloc[r])
+    flipped_image, flipped_steering = flip_random(original_image,steering_angle)
+    fig = plt.figure()
+    a = fig.add_subplot(1, 2, 1)
+    img = original_image
+
+    imgplot = plt.imshow(img)
+    a.set_title('original image')
+
+    a = fig.add_subplot(1, 2, 2)
+    imgplot = plt.imshow(flipped_image)
+    imgplot.set_clim(0.0, 0.7)
+    a.set_title('flipped image')
+    plt.show()
+
+
+def test_augmented_image(data):
+    r = np.random.randint(1, 100)
+    original_image, steering_angle = camera_image_choose(data.iloc[r])
+    augmented_image, augmented_steering = get_augmented_data(original_image,steering_angle)
+    fig = plt.figure()
+    a = fig.add_subplot(1, 2, 1)
+    img = original_image
+
+    imgplot = plt.imshow(img)
+    a.set_title('original image')
+
+    a = fig.add_subplot(1, 2, 2)
+    imgplot = plt.imshow(augmented_image)
+    imgplot.set_clim(0.0, 0.7)
+    a.set_title('augmented image')
+    plt.show()
 
 

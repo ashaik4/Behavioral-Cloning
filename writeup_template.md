@@ -5,6 +5,13 @@
 ###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
 
 ---
+Overview
+---
+This repository contains files for the Behavioral Cloning Project.
+
+In this project, I have used what I've learned about deep neural networks and convolutional neural networks to clone driving behavior. I have trained, validated and tested a model using Keras. The model would output a steering angle to an autonomous vehicle.
+
+I have used a simulator provided by Udacity where I could steer a car around a track and collect the data. I used image data and steering angles to train a neural network and then use this model to drive the car autonomously around the track.
 
 **Behavioral Cloning Project**
 
@@ -18,7 +25,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
+[image1]: ./documentation/behavioral-cloning-pipeline.png "Model Visualization"
 [image2]: ./examples/placeholder.png "Grayscaling"
 [image3]: ./examples/placeholder_small.png "Recovery Image"
 [image4]: ./examples/placeholder_small.png "Recovery Image"
@@ -54,9 +61,44 @@ The model.py file contains the code for training and saving the convolution neur
 
 ####1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My convolutional neural network architecture was inspired by NVIDIA's End to End Learning for Self-Driving Cars [paper](https://arxiv.org/pdf/1604.07316v1.pdf). Starting from this base model, I refer to various papers and made trial and error several times, finally making the following architecture.
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+| Layer (type)                              | Output Shape       | Param # |
+|-------------------------------------------|--------------------|---------|
+| lambda_1 (Lambda)                         | (None, 64, 64, 3)  | 0       |
+| convolution2d_1 (Convolution2D)           | (None, 30, 30, 24) | 1824    |
+| prelu_1 (PReLU)                           | (None, 30, 30, 24) | 21600   |
+| batchnormalization_1 (BatchNormalization) | (None, 30, 30, 24) | 48      |
+| convolution2d_2 (Convolution2D)           | (None, 13, 13, 36) | 21636   |
+| prelu_2 (PReLU)                           | (None, 13, 13, 36) | 6084    |
+| batchnormalization_2 (BatchNormalization) | (None, 13, 13, 36) | 72      |
+| convolution2d_3 (Convolution2D)           | (None, 5, 5, 48)   | 43248   |
+| prelu_3 (PReLU)                           | (None, 5, 5, 48)   | 1200    |
+| batchnormalization_3 (BatchNormalization) | (None, 5, 5, 48)   | 96      |
+| convolution2d_4 (Convolution2D)           | (None, 5, 5, 64)   | 27712   |
+| prelu_4 (PReLU)                           | (None, 5, 5, 64)   | 1600    |
+| batchnormalization_4 (BatchNormalization) | (None, 5, 5, 64)   | 128     |
+| maxpooling2d_1 (MaxPooling2D)             | (None, 4, 4, 64)   | 0       |
+| convolution2d_5 (Convolution2D)           | (None, 4, 4, 64)   | 36928   |
+| prelu_5 (PReLU)                           | (None, 4, 4, 64)   | 1024    |
+| batchnormalization_5 (BatchNormalization) | (None, 4, 4, 64)   | 128     |
+| maxpooling2d_2 (MaxPooling2D)             | (None, 3, 3, 64)   | 0       |
+| flatten_1 (Flatten)                       | (None, 576)        | 0       |
+| dense_1 (Dense)                           | (None, 1164)       | 671628  |
+| prelu_6 (PReLU)                           | (None, 1164)       | 1164    |
+| batchnormalization_6 (BatchNormalization) | (None, 1164)       | 2328    |
+| dropout_1 (Dropout)                       | (None, 1164)       | 0       |
+| dense_2 (Dense)                           | (None, 100)        | 116500  |
+| prelu_7 (PReLU)                           | (None, 100)        | 100     |
+| batchnormalization_7 (BatchNormalization) | (None, 100)        | 200     |
+| dropout_2 (Dropout)                       | (None, 100)        | 0       |
+| dense_3 (Dense)                           | (None, 50)         | 5050    |
+| prelu_8 (PReLU)                           | (None, 50)         | 50      |
+| batchnormalization_8 (BatchNormalization) | (None, 50)         | 100     |
+| dense_4 (Dense)                           | (None, 10)         | 510     |
+| prelu_9 (PReLU)                           | (None, 10)         | 10      |
+| batchnormalization_9 (BatchNormalization) | (None, 10)         | 20      |
+| dense_5 (Dense)                           | (None, 1)          | 11      |
 
 ####2. Attempts to reduce overfitting in the model
 

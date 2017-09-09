@@ -5,6 +5,8 @@ from keras.layers.normalization import BatchNormalization
 from keras.models import Sequential
 from keras.optimizers import Adam
 
+from matplotlib import pyplot as plt
+
 import utility
 
 # Fix error with Keras and TensorFlow
@@ -97,5 +99,16 @@ def main():
         f.write(model.to_json())
 
 
+
 if __name__ == '__main__':
-    main()
+    #main()
+    train, valid = utility.prepare_data()
+    #utility.test_image_shear(train)
+
+    #utility.test_image_gamma(train)
+
+    #utility.test_image_flip(train)
+    utility.test_augmented_image(train)
+
+
+
