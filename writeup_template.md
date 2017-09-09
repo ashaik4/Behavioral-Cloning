@@ -24,7 +24,7 @@ The goals / steps of this project are the following:
 
 
 [//]: # (Image References)
-
+![pipeline](./documentation/behavioral-cloning-pipeline.png) 
 [image1]: ./documentation/behavioral-cloning-pipeline.png "Model Visualization"
 [image2]: ./examples/placeholder.png "Grayscaling"
 [image3]: ./examples/placeholder_small.png "Recovery Image"
