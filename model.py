@@ -108,7 +108,10 @@ if __name__ == '__main__':
     #utility.test_image_gamma(train)
 
     #utility.test_image_flip(train)
-    utility.test_augmented_image(train)
+
+    #utility.test_augmented_image(train)
+
+    utility.test_left_center_right(train)
 
 
 

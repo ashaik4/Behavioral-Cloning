@@ -213,4 +213,25 @@ def test_augmented_image(data):
     a.set_title('augmented image')
     plt.show()
 
+def test_left_center_right(data):
+    r = np.random.randint(1,1500)
+    row = data.iloc[r]
+    left,center, right = 0,1,2
+    left_image,l_angle = camera_data(row,left)
+    center_image,c_angle = camera_data(row, center)
+    right_image, r_angle = camera_data(row, right)
 
+    #plotting the images
+    fig = plt.figure()
+    a = fig.add_subplot(1,3,1)
+    img_plot = plt.imshow(left_image)
+    a.set_title('left camera')
+
+    a = fig.add_subplot(1,3,2)
+    img_plot = plt.imshow(center_image)
+    a.set_title('center camera')
+
+    a = fig.add_subplot(1, 3, 3)
+    img_plot = plt.imshow(right_image)
+    a.set_title('right camera')
+    plt.show()
