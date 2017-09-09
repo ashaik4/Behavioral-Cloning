@@ -24,7 +24,7 @@ The goals / steps of this project are the following:
 
 
 [//]: # (Image References)
-![pipeline](./documentation/behavioral-cloning-pipeline.png) 
+ 
 [image1]: ./documentation/behavioral-cloning-pipeline.png "Model Visualization"
 [image2]: ./examples/placeholder.png "Grayscaling"
 [image3]: ./examples/placeholder_small.png "Recovery Image"
@@ -38,6 +38,8 @@ The goals / steps of this project are the following:
 
 ---
 ###Files Submitted & Code Quality
+#### 0. Image Processing Pipleline
+![pipeline](./documentation/behavioral-cloning-pipeline.png)
 
 ####1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
@@ -52,6 +54,7 @@ Using the Udacity provided simulator and my drive.py file, the car can be driven
 ```sh
 python drive.py model.h5
 ```
+
 
 ####3. Submission code is usable and readable
 
