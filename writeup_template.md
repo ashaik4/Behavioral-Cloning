@@ -2,8 +2,6 @@
 
 ##Writeup Template
 
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 Overview
 ---
@@ -17,7 +15,8 @@ I have used a simulator provided by Udacity where I could steer a car around a t
 
 The goals / steps of this project are the following:
 * Use the simulator to collect data of good driving behavior
-* Build, a convolution neural network in Keras that predicts steering angles from images
+* Preprocess the data for feeding the model
+* Build, a convolution neural network in Keras that predicts steering angles from preprocessed images
 * Train and validate the model with a training and validation set
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
@@ -27,18 +26,18 @@ The goals / steps of this project are the following:
  
 [image1]: ./documentation/behavioral-cloning-pipeline.png "Model Visualization"
 [image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image3]: ./documentation/gamma.png "Gamma Corrected"
+[image4]: ./documentation/shear.png "Random Shear"
+[image5]: ./documentation/left-center-right.png "left-center-right"
+[image6]: ./documentation/augmented.png "Augmented Image"
+[image7]: ./documentation/flip.png "Flipped Image"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
 ---
 ###Files Submitted & Code Quality
-#### 0. Image Processing Pipleline
+#### 0. Image Data Preprocessing Pipleline
 ![pipeline](./documentation/behavioral-cloning-pipeline.png)
 
 ####1. Submission includes all required files and can be used to run the simulator in autonomous mode
@@ -47,11 +46,15 @@ My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* writeup_report.md summarizing the results
 
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
+python drive.py model.json
+
+or 
+
 python drive.py model.h5
 ```
 
