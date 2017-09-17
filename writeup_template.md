@@ -1,9 +1,9 @@
 #**Behavioral Cloning** 
 
-##Writeup Template
+
 
 ---
-Overview
+Abstract
 ---
 This repository contains files for the Behavioral Cloning Project.
 
@@ -107,7 +107,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 ####2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture consisted of a convolution neural network with the following layers and layer sizes:
 
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
